@@ -12,3 +12,11 @@ export const APP_ROUTES = {
     HOME: '/',
     PROFILE: '/profile',
 }
+
+export const cookie = {
+  cookieName: "next-auth-hyperano",
+  password: "complex_password_at_least_32_characters_long_hyperano",
+  cookieOptions: { secure: true },
+};
+
+export const baseUrl = "https://hyperano.ir/api/"

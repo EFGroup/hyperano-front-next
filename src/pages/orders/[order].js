@@ -3,13 +3,7 @@ import axios from 'axios';
 import OrderScreen from 'screens/OrderScreen';
 import { withIronSessionSsr } from 'iron-session/next';
 
-const cookie = {
-  cookieName: process.env.COOKIE_NAME,
-  password: process.env.COOKIE_PASSWORD,
-  cookieOptions: { secure: process.env.NODE_ENV === 'production' },
-};
-
-const baseUrl = process.env.API_SERVER_URL;
+import { cookie, baseUrl } from 'utils/constants';
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req, params }) {

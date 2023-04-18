@@ -1,10 +1,6 @@
 import { withIronSessionApiRoute } from 'iron-session/next';
 
-const cookie = {
-  cookieName: process.env.COOKIE_NAME,
-  password: process.env.COOKIE_PASSWORD,
-  cookieOptions: { secure: process.env.NODE_ENV === 'production' },
-};
+import { cookie, baseUrl } from 'utils/constants';
 
 export default withIronSessionApiRoute(
   async function signIn(req, res) {
