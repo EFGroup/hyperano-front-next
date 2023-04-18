@@ -1,0 +1,52 @@
+import React from "react";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { schemaRequiresTrueValue } from "@rjsf/utils";
+
+const CheckboxWidget = (props) => {
+  const {
+    schema,
+    id,
+    value,
+    disabled,
+    readonly,
+    label,
+    autofocus,
+    onChange,
+    onBlur,
+    onFocus,
+  } = props;
+  // Because an unchecked checkbox will cause html5 validation to fail, only add
+  // the "required" attribute if the field value must be "true", due to the
+  // "const" or "enum" keywords
+  const required = schemaRequiresTrueValue(schema);
+
+  const _onChange = (_, checked) => onChange(checked);
+  const _onBlur = ({
+    target: { value },
+  }) => onBlur(id, value);
+  const _onFocus = ({
+    target: { value },
+  }) => onFocus(id, value);
+
+  return (
+    <FormControlLabel
+      control={
+        <Checkbox
+          id={id}
+          name={id}
+          checked={typeof value === "undefined" ? false : Boolean(value)}
+          required={required}
+          disabled={disabled || readonly}
+          autoFocus={autofocus}
+          onChange={_onChange}
+          onBlur={_onBlur}
+          onFocus={_onFocus}
+        />
+      }
+      label={label || ""}
+    />
+  );
+};
+
+export default CheckboxWidget;
