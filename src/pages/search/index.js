@@ -3,7 +3,14 @@ import axios from 'axios';
 import SearchScreen from 'screens/SearchScreen';
 import { withIronSessionSsr } from 'iron-session/next';
 
-import { cookie, baseUrl } from 'utils/constants';
+// import { cookie, baseUrl } from 'utils/constants';
+const baseUrl = process.env.API_SERVER_URL;
+
+const cookie = {
+  cookieName: process.env.COOKIE_NAME,
+  password: process.env.COOKIE_PASSWORD,
+  cookieOptions: { secure: process.env.NODE_ENV === 'production' },
+};
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req, query }) {
