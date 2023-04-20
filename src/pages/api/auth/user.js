@@ -18,6 +18,7 @@ export default withIronSessionApiRoute(
       method,
       session: { user: userSession },
     } = req;
+
     let userData = {
       orders: null,
       wallet: null,
