@@ -1,10 +1,8 @@
-import React from 'react';
-import axios from 'axios';
 import ProductScreen from 'screens/ProductScreen';
 import { withIronSessionSsr } from 'iron-session/next';
 
-// import { cookie, baseUrl } from 'utils/constants';
-const baseUrl = process.env.API_SERVER_URL;
+import client from "apollo/apollo-client";
+import { user, cart, productCategory, productShop } from 'apollo/requests';
 
 const cookie = {
   cookieName: process.env.COOKIE_NAME,
@@ -15,49 +13,88 @@ const cookie = {
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req, params }) {
     try {
+
+      const userSession = req.session?.user;
       
-      const { data: user } = await axios({
-        url: baseUrl + `auth/user`,
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Cookie: req.headers.cookie
+      let initUserData = {
+        orders: null,
+        wallet: null,
+        discounts: null,
+        addresses: null,
+        order_carts: null,
+        category_coupons: null,
+      }
+
+      if (userSession) {
+        const { data } = await client.query({
+          query: user.get,
+          context: {
+            serviceName: "auth",
+              headers: {
+                authorization: `Bearer ${userSession?.token}`
+            }
+          }
+        });
+        initUserData = data?.user;
+      }
+      else {
+        const {data: orderCart} = await client.query({
+          query: cart.orderCart,
+        });
+        initUserData = {...initUserData, order_carts: orderCart?.orderCart};
+      }
+
+      const { data: menus } = await client.query({ query: productCategory.get });
+
+      const { data: productData } = await client.query({
+        query: productShop.get,
+        variables: {
+          shop_ids: params?.shop,
+          product_ids: params?.product
         }
       });
-
-      const {
-        order_carts: cart,
-        category_coupons: coupons,
-      } = user;
-
-      const { data: menus } = await axios({
-        url: baseUrl + `menu`
-      });
-
-      const { data: product } = await axios({
-        url: baseUrl + `product/${params.product}/?shop=${params.shop}`
+    
+      const { data: offsliderData } = await client.query({
+        query: productShop.get,
+        variables: {
+          shop_ids: params?.shop,
+          category_ids: productData?.productShop?.products?.data[0]?.product_info?.category?.id,
+          orderBy_field: "discount_percent",
+          limit: 5
+        }
       });
 
       return {
         props: {
-          user,
-          cart,
-          menus,
-          coupons,
-          product,
+          product: productData?.productShop?.products?.data[0],
+          similars: offsliderData?.productShop?.products?.data,
+          isLanding: false,
           layout: "minimal",
-        },
-      };
+          user: initUserData,
+          menus: menus?.productCategory,
+          cart: initUserData?.order_carts,
+          coupons: initUserData?.category_coupons,
+        }
+      }
     }
     catch (error) {
       return {
-        notFound: true,
+        props: {
+          product: {},
+          similars: [],
+          user: {},
+          cart: {},
+          menus: [],
+          coupons: [],
+          isLanding: false,
+          layout: "minimal",
+        }
       }
     }
   },
   cookie
 );
 
-export default function ProductPage(props) {
+export default function IndexPage(props) {
   return <ProductScreen {...props} />
-};
+}

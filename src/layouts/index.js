@@ -4,13 +4,13 @@ import MinimalLayout from './Minimal';
 import { useDispatch } from "react-redux";
 import { setUser, setInitCart, setInitCoupons } from 'redux/actions';
 
-const LayoutProvider = ({ layout, user, cart, coupon, children }) => {
+const LayoutProvider = ({ layout, user, cart, coupons, children }) => {
   const dispatch = useDispatch();
 
   useEffect( () => {
     user && dispatch(setUser(user));
     cart && dispatch(setInitCart(cart));
-    coupon && dispatch(setInitCoupons(coupon));
+    coupons && dispatch(setInitCoupons(coupons));
   }, [])
   
   switch (layout) {

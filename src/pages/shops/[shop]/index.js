@@ -1,10 +1,8 @@
-import React from 'react';
-import axios from 'axios';
 import ShopScreen from 'screens/ShopScreen';
 import { withIronSessionSsr } from 'iron-session/next';
 
-// import { cookie, baseUrl } from 'utils/constants';
-const baseUrl = process.env.API_SERVER_URL;
+import client from "apollo/apollo-client";
+import { user, cart, productCategory, carousel, productShop } from 'apollo/requests';
 
 const cookie = {
   cookieName: process.env.COOKIE_NAME,
@@ -16,61 +14,96 @@ export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req, params }) {
     try {
 
-      const { data: user } = await axios({
-        url: baseUrl + `auth/user`,
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Cookie: req.headers.cookie
+      const userSession = req.session?.user;
+      
+      let initUserData = {
+        orders: null,
+        wallet: null,
+        discounts: null,
+        addresses: null,
+        order_carts: null,
+        category_coupons: null,
+      }
+
+      if (userSession) {
+        const { data } = await client.query({
+          query: user.get,
+          context: {
+            serviceName: "auth",
+              headers: {
+                authorization: `Bearer ${userSession?.token}`
+            }
+          }
+        });
+        initUserData = data?.user;
+      }
+      else {
+        const {data: orderCart} = await client.query({
+          query: cart.orderCart,
+        });
+        initUserData = {...initUserData, order_carts: orderCart?.orderCart};
+      }
+
+      const { data: menus } = await client.query({ query: productCategory.get });
+
+      const { data: carouselData } = await client.query({
+        query: carousel.get,
+        variables: {
+          shop_id: params?.shop,
+          depth: 1,
+          limit: 10
         }
       });
 
-      const {
-        order_carts: cart,
-        category_coupons: coupons,
-      } = user;
-      
-      const { data: menus } = await axios({
-        url: baseUrl + `menu`
+      const { data: offsliderData } = await client.query({
+        query: productShop.get,
+        variables: {
+          shop_ids: params?.shop,
+          orderBy_field: "discount_percent",
+          limit: 5
+        }
       });
 
-      const { data: carousel } = await axios({
-        url: baseUrl + `carousel/?shop=${params.shop}&category=1`
-      });
-
-      const { data: offslider } = await axios({
-        url: baseUrl + `product/?shop=${params.shop}`
-      });
-
-      const { data: collection } = await axios({
-        url: baseUrl + `product/collection/?shop=${params.shop}`
+      const { data: collectionData } = await client.query({
+        query: productShop.productCollectedCategory,
+        variables: {
+          shop_id: params?.shop
+        }
       });
 
       return {
         props: {
-          user,
-          cart,
-          menus,
-          coupons,
-          carousel,
-          offslider,
-          collection,
-          isLanding: true,
+          carousel: carouselData?.carousel,
+          offslider: offsliderData?.productShop?.products?.data,
+          collection: collectionData?.productCollectedCategory?.data,
+          isLanding: false,
           layout: "minimal",
-          title: 'userOrderCart',
-          // selectedCategories: JSON.parse(selectedCategories.productCategory),
-        },
-      };
+          user: initUserData,
+          menus: menus?.productCategory,
+          cart: initUserData?.order_carts,
+          coupons: initUserData?.category_coupons,
+        }
+      }
     }
     catch (error) {
       return {
-        notFound: true,
+        props: {
+          carousel: [],
+          offslider: [],
+          collection: [],
+          user: {},
+          cart: {},
+          menus: [],
+          coupons: [],
+          isLanding: false,
+          layout: "minimal",
+        }
       }
     }
   },
   cookie
 );
 
-export default function ShopPage(props) {
+export default function IndexPage(props) {
   return <ShopScreen {...props} />
-};
+}

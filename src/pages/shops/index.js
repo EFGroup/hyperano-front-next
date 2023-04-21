@@ -1,9 +1,8 @@
-import axios from 'axios';
 import ShopsScreen from 'screens/ShopsScreen';
 import { withIronSessionSsr } from 'iron-session/next';
 
-// import { cookie, baseUrl } from 'utils/constants';
-const baseUrl = process.env.API_SERVER_URL;
+import client from "apollo/apollo-client";
+import { user, cart, shop, productCategory } from 'apollo/requests';
 
 const cookie = {
   cookieName: process.env.COOKIE_NAME,
@@ -14,50 +13,70 @@ const cookie = {
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
     try {
+
+      const userSession = req.session?.user;
       
-      const { data: user } = await axios({
-        url: baseUrl + `auth/user`,
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Cookie: req.headers.cookie
-        }
-      });
+      let initUserData = {
+        orders: null,
+        wallet: null,
+        discounts: null,
+        addresses: null,
+        order_carts: null,
+        category_coupons: null,
+      }
 
-      const {
-        order_carts: cart,
-        category_coupons: coupons,
-      } = user;
+      if (userSession) {
+        const { data } = await client.query({
+          query: user.get,
+          context: {
+            serviceName: "auth",
+              headers: {
+                authorization: `Bearer ${userSession?.token}`
+            }
+          }
+        });
+        initUserData = data?.user;
+      }
+      else {
+        const {data: orderCart} = await client.query({
+          query: cart.orderCart,
+        });
+        initUserData = {...initUserData, order_carts: orderCart?.orderCart};
+      }
 
-      const { data: menus } = await axios({
-        url: baseUrl + `menu`
-      });
+      const { data: shops } = await client.query({ query: shop.list });
 
-      const { data: shops } = await axios({
-        method: 'GET',
-        url: baseUrl + `shop`
-      });
+      const { data: menus } = await client.query({ query: productCategory.get });
 
       return {
         props: {
-          user,
-          cart,
-          menus,
-          shops,
-          coupons,
+          isLanding: false,
           layout: "minimal",
-        },
-      };
+          user: initUserData,
+          shops: shops?.shop?.data,
+          menus: menus?.productCategory,
+          cart: initUserData?.order_carts,
+          coupons: initUserData?.category_coupons,
+        }
+      }
     }
     catch (error) {
       return {
-        notFound: true,
+        props: {
+          user: {},
+          cart: {},
+          menus: [],
+          shops: [],
+          coupons: [],
+          isLanding: false,
+          layout: "minimal",
+        }
       }
     }
   },
   cookie
 );
 
-export default function Shops(props) {
+export default function IndexPage(props) {
   return <ShopsScreen {...props} />
-};
+}

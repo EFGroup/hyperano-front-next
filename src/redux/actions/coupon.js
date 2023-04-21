@@ -13,6 +13,6 @@ export const openCouponPopup = openCoupons => ({
   openCoupons
 })
 
-export const setInitCoupons = (coupon) => async dispatch => {
-  dispatch(setCoupons(coupon))
+export const setInitCoupons = (coupons) => async dispatch => {
+  dispatch(setCoupons(coupons))
 }
