@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import Card from '@mui/material/Card';
@@ -12,9 +12,10 @@ import CardContent from '@mui/material/CardContent';
 import queryString from 'query-string';
 import { VerticalCard } from 'components';
 
-export default function SearchScreen({ searchData, loading, query, lastPage, currentPage }) {
+export default function SearchScreen({ searchData, query, lastPage, currentPage }) {
   
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [searchState, setSearchState] = useState(
     {
       ...query,
@@ -45,6 +46,24 @@ export default function SearchScreen({ searchData, loading, query, lastPage, cur
   const handlePage = (event, page) => {
     handleSearch({ ...searchState, page })
   };
+
+  const aniStart = () => {
+    setLoading(true);
+  };
+  const aniEnd = () => {
+    setLoading(false);
+  };
+  useEffect(() => {
+    router.events.on("routeChangeStart", aniStart);
+    router.events.on("routeChangeComplete", aniEnd);
+    router.events.on("routeChangeError", aniEnd);
+
+    return () => {
+      router.events.off("routeChangeStart", aniStart);
+      router.events.off("routeChangeComplete", aniEnd);
+      router.events.off("routeChangeError", aniEnd);
+    };
+  }, [router]);
 
   return (
     <>
@@ -97,7 +116,7 @@ export default function SearchScreen({ searchData, loading, query, lastPage, cur
             {
               loading
               ?
-              [0,1,2,3,4,5].map( item => (
+              [0,1,2,3,4,5,7,8,9,10,11].map( item => (
                 <Skeleton key={item} animation="wave" variant="rectangular" sx={{ width: 320, height: 485, borderRadius: 3 }} />
               ))
               :

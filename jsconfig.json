@@ -11,6 +11,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
+    // "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
     "module": "esnext",
     "moduleResolution": "node",
