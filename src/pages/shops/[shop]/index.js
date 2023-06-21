@@ -71,6 +71,22 @@ export const getServerSideProps = withIronSessionSsr(
         }
       });
 
+      const { data: packageData } = await client.query({
+        query: productShop.list,
+        variables: {
+          shop_ids: params?.shop,
+          is_packaged: 1,
+        },
+      });
+
+      const { data: wolesaleData } = await client.query({
+        query: productShop.get,
+        variables: {
+          shop_id: params?.shop,
+          has_wolesale_discount: 1,
+        },
+      });
+
       return {
         props: {
           carousel: carouselData?.carousel,
@@ -82,8 +98,10 @@ export const getServerSideProps = withIronSessionSsr(
           menus: menus?.productCategory,
           cart: initUserData?.order_carts,
           coupons: initUserData?.category_coupons,
-        }
-      }
+          packageData: packageData?.productShop?.products?.data,
+          wolesaleData: wolesaleData?.productShop?.products?.data,
+        },
+      };
     }
     catch (error) {
       return {
@@ -91,6 +109,8 @@ export const getServerSideProps = withIronSessionSsr(
           carousel: [],
           offslider: [],
           collection: [],
+          packageData: [],
+          wolesaleData: [],
           user: {},
           cart: {},
           menus: [],
@@ -104,6 +124,6 @@ export const getServerSideProps = withIronSessionSsr(
   cookie
 );
 
-export default function IndexPage(props) {
+export default function ShopPage(props) {
   return <ShopScreen {...props} />
 }

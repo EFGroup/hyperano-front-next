@@ -20,5 +20,7 @@ export { default as ShopCard } from './ShopCard';
 export { default as CouponCard } from './CouponCard';
 export { default as AddressCard } from './AddressCard';
 export { default as VerticalCard } from './VerticalCard';
+export { default as PackageProduct } from './PackageProduct';
 export { default as HorizontalCard } from './HorizontalCard';
 export { default as AddressCreation } from './AddressCreation';
+export { default as WholesaleProduct } from './WholesaleProduct';

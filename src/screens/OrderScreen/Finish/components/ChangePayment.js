@@ -59,7 +59,6 @@ export default function ChangePayment({orderId, shop_id, refetchInfo, goToPaymen
 
   const handleUpdateOrder = async (ids, payment_type_id) =>{
     try {
-      console.log(payment_type_id)
       const result = await updateOrder({
         variables: { ids, payment_type_id }
       })

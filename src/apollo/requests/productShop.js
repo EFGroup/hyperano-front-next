@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export default {
   list: gql`
-    query list(
+    query productShop(
       $shop_ids: [String]
       $title: String
       $ids: [String]
@@ -21,11 +21,14 @@ export default {
       $from_sub_childs: Int
       $coupon_id: String
       $from_all_shops: Int
+      $category_collected_id: String
       $page: Int
       $limit: Int
       $orderBy_field: String
       $orderBy_direction: String
       $withs: [String]
+      $has_wolesale_discount: Int
+      $is_packaged: Int
     ) {
       productShop(
         shop_ids: $shop_ids
@@ -37,6 +40,7 @@ export default {
         brand_ids: $brand_ids
         brand_titles: $brand_titles
         barcodes: $barcodes
+        category_collected_id: $category_collected_id
         min_me_price: $min_me_price
         min_me_price_equality: $min_me_price_equality
         max_me_price: $max_me_price
@@ -51,15 +55,10 @@ export default {
         orderBy_field: $orderBy_field
         orderBy_direction: $orderBy_direction
         withs: $withs
+        has_wolesale_discount: $has_wolesale_discount
+        is_packaged: $is_packaged
       ) {
         products {
-          total
-          per_page
-          current_page
-          from
-          to
-          last_page
-          has_more_pages
           data {
             id
             co_price
@@ -75,12 +74,18 @@ export default {
               id
               title
             }
+            wolesale_discounts {
+              quantity
+              discount_amount
+              discount_percent
+            }
             product_info {
               id
               title
               introtext
               images
               category {
+                id
                 title
               }
               brand {
@@ -96,6 +101,36 @@ export default {
                   id
                   co_price
                   me_price
+                  shop {
+                    id
+                    title
+                    min_order_cost
+                    min_free_ship
+                    lat
+                    lng
+                    status {
+                      id
+                      title
+                    }
+                    type {
+                      id
+                      title
+                    }
+                    is_active
+                    support_info
+                    products_count
+                    avg_scores_shop
+                  }
+                  attributes {
+                    id
+                    title
+                    type
+                    values {
+                      id
+                      title
+                      price_change_value
+                    }
+                  }
                   product_info {
                     id
                     title
@@ -103,9 +138,11 @@ export default {
                     introtext
                     images
                     brand {
+                      id
                       title
                     }
                     category {
+                      id
                       title
                     }
                     unit {
@@ -228,6 +265,11 @@ export default {
               id
               title
             }
+            wolesale_discounts {
+              quantity
+              discount_amount
+              discount_percent
+            }
             product_info {
               id
               title
@@ -284,8 +326,26 @@ export default {
     }
   `,
   get: gql`
-    query productShop($ids: [String], $barcodes: [String], $product_ids: [String], $shop_ids: [String], $limit: Int, $category_ids: [String], $orderBy_field: String) {
-      productShop(ids: $ids, barcodes: $barcodes, product_ids: $product_ids, shop_ids: $shop_ids, category_ids: $category_ids, limit: $limit, orderBy_field: $orderBy_field) {
+    query productShop(
+      $ids: [String]
+      $barcodes: [String]
+      $product_ids: [String]
+      $shop_ids: [String]
+      $limit: Int
+      $category_ids: [String]
+      $orderBy_field: String
+      $has_wolesale_discount: Int
+    ) {
+      productShop(
+        ids: $ids
+        barcodes: $barcodes
+        product_ids: $product_ids
+        shop_ids: $shop_ids
+        category_ids: $category_ids
+        limit: $limit
+        orderBy_field: $orderBy_field
+        has_wolesale_discount: $has_wolesale_discount
+      ) {
         products {
           data {
             id
@@ -301,6 +361,11 @@ export default {
             discount_type {
               id
               title
+            }
+            wolesale_discounts {
+              quantity
+              discount_amount
+              discount_percent
             }
             product_info {
               id
@@ -411,29 +476,29 @@ export default {
       }
     }
   `,
-  productCollectedCategory : gql`
-  query productCollectedCategory (
-    $ids: [String]
-    $shop_id: String!
-    $is_active: Int
-    $title: String
-    $code: String
-    $page: Int
-    $limit: Int
-    $orderBy_field: String
-    $orderBy_direction: String
-  ) {
-    productCollectedCategory (
-      ids: $ids
-      shop_id: $shop_id
-      is_active: $is_active
-      title: $title
-      code: $code
-      page: $page
-      limit: $limit
-      orderBy_field: $orderBy_field
-      orderBy_direction: $orderBy_direction
+  productCollectedCategory: gql`
+    query productCollectedCategory(
+      $ids: [String]
+      $shop_id: String!
+      $is_active: Int
+      $title: String
+      $code: String
+      $page: Int
+      $limit: Int
+      $orderBy_field: String
+      $orderBy_direction: String
     ) {
+      productCollectedCategory(
+        ids: $ids
+        shop_id: $shop_id
+        is_active: $is_active
+        title: $title
+        code: $code
+        page: $page
+        limit: $limit
+        orderBy_field: $orderBy_field
+        orderBy_direction: $orderBy_direction
+      ) {
         data {
           id
           title
@@ -471,5 +536,5 @@ export default {
         }
       }
     }
-  `
+  `,
 };

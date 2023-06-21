@@ -46,7 +46,7 @@ export const getServerSideProps = withIronSessionSsr(
 
       const {data: menus} = await client.query({ query: productCategory.get });
       
-      const {data: searchData} = await client.query({
+      const {data: searchData, errors} = await client.query({
         query: productShop.list,
         variables: {
           ...query,

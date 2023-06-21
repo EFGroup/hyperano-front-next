@@ -160,7 +160,7 @@ const Menu = ({ menus = [] }) => {
                         <Grid container item xs={4}>
                           <Card sx={{height: '100%', width: '100%', p: 4}}>
                             <CardMedia
-                              image='/vercel.svg'
+                              image='/logo.svg'
                               title="title"
                               sx={{
                                 height: '100%',

@@ -45,23 +45,23 @@ export default function VerticalCard({
 
   return (
     <Card
-      elevation={6}
+      elevation={2}
       sx={{
-        width: 320,
+        width: 240,
         color: orange[400],
         position: 'relative',
         transition: 'all 0.2s ease',
-        boxShadow: '0 0px 16px -8px #eaeaea',
-        '&:hover': {
-          zIndex: 1,
-          transform: 'scale(1.02)',
-          transition: 'all 0.3s ease',
-          boxShadow: `0 8px 8px -8px #ccc`,
-        }
+        // boxShadow: '0 0px 16px -8px #eaeaea',
+        // '&:hover': {
+        //   zIndex: 1,
+        //   transform: 'scale(1.02)',
+        //   transition: 'all 0.3s ease',
+        //   boxShadow: `0 8px 8px -8px #ccc`,
+        // }
       }}>
-      <CardActionArea onClick={onClick} href={`/shops/${shop?.id}/${id}`}>        
+      <CardActionArea onClick={onClick} href={`/shops/${shop?.id}/${id}`}>       
         <CardHeader
-          title={<Typography width={200} noWrap color="primary" textAlign="start" variant="subtitle1">{productTitle}</Typography>}
+          title={<Typography noWrap color="primary" textAlign="start" variant="subtitle1">{productTitle}</Typography>}
           subheader={<Typography color="GrayText" textAlign="start" variant="body1" fontSize={16}>{convertEnToFa(introtext || ".")}</Typography>}
           action={
             discount_percent && <Chip sx={{minWidth: 64}} color="error" label={<Typography variant="subtitle2">{convertEnToFa(discount_percent)}</Typography>} />
@@ -71,13 +71,13 @@ export default function VerticalCard({
           title={productTitle}
           image={productImgUrl(images)}
           sx={{
-            height: 200,
+            height: 120,
             width: '100%',
             backgroundSize: 'contain',
           }}
         />
-        <CardContent sx={{py: 4}}>
-          <Stack pb={5}>
+        <CardContent sx={{py: 0}}>
+          <Stack pb={8}>
             <Typography color="primary" variant="h4" align="center">
               {currency(me_price)}
             </Typography>

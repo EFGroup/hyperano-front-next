@@ -153,86 +153,130 @@ const AddToCartBtn = (props)=> {
 
   return (
     <>
-    {
-        currentExist
-        ?
+      {currentExist ? (
         <>
-            <Button color="secondary" disabled={loading} onClick={()=>handleClick(current.number + 1)} variant="outlined" sx={{ml: -2, px: 3}}>
-                <AddCircleOutlineRoundedIcon/>
-            </Button>
-            <Stack justifyContent="center" alignItems="center" bgcolor="warning.lighter" color="#5a5a5a" sx={{alignSelf: 'center', zIndex: 2, width: 68, height: 68, borderRadius: '50%', border: '1px solid', borderColor: 'warning.main'}}>
-                {
-                    loading
-                    ?
-                    <CircularProgress size={16} color="inherit" />
-                    :
-                    <Typography variant="subtitle1">{digitsEnToFa(current.number)}</Typography>
-                }
+          <Button
+            size="small"
+            color="secondary"
+            disabled={loading}
+            onClick={() => handleClick(current.number + 1)}
+            variant="outlined"
+            sx={{ ml: -2, px: 2 }}
+          >
+            <AddCircleOutlineRoundedIcon fontSize="small" />
+          </Button>
+          <Stack
+            justifyContent="center"
+            alignItems="center"
+            bgcolor="warning.lighter"
+            color="#5a5a5a"
+            sx={{
+              alignSelf: "center",
+              zIndex: 2,
+              minWidth: 54,
+              width: 54,
+              height: 54,
+              borderRadius: "50%",
+              border: "1px solid",
+              borderColor: "warning.main",
+            }}
+          >
+            {loading ? (
+              <CircularProgress size={16} color="inherit" />
+            ) : (
+              <Typography variant="subtitle1">
+                {digitsEnToFa(current.number)}
+              </Typography>
+            )}
             <Typography variant="caption">عدد</Typography>
-            </Stack>
-            {
-                current.number < 2
-                ?
-                <Button color="error" disabled={loading} onClick={()=>handleClick(0)} variant="outlined" sx={{mr: -2, px: 3}}>
-                    <DeleteOutlineRoundedIcon color="error" />
-                </Button>
-                :
-                <Button color="info" disabled={loading} onClick={()=>handleClick(current.number - 1)} variant="outlined" sx={{mr: -2, px: 3}}>
-                    <RemoveCircleOutlineRoundedIcon/>
-                </Button>
-            }
+          </Stack>
+          {current.number < 2 ? (
+            <Button
+              size="small"
+              color="error"
+              disabled={loading}
+              onClick={() => handleClick(0)}
+              variant="outlined"
+              sx={{ mr: -2, px: 2 }}
+            >
+              <DeleteOutlineRoundedIcon fontSize="small" color="error" />
+            </Button>
+          ) : (
+            <Button
+              size="small"
+              color="info"
+              disabled={loading}
+              onClick={() => handleClick(current.number - 1)}
+              variant="outlined"
+              sx={{ mr: -2, px: 2 }}
+            >
+              <RemoveCircleOutlineRoundedIcon fontSize='small' />
+            </Button>
+          )}
         </>
-        :
-            icon
-            ?
-            <Button
-                fullWidth
-                color="warning"
-                variant="contained"
-                disabled={isValid}
-                onClick={() => handleClick()}
-                sx={{
-                    width: 68, height: 68, borderRadius: '50%',
-                    fontWeight: "bold",
-                    boxShadow: 'none',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                        fontSize: 15,
-                        transition: 'all 0.3s ease',
-                        boxShadow: `0 10px 16px -4px #ccc}`
-                    }
-                }}>
-                {
-                    loading ? <CircularProgress size={24} color="inherit" /> : <AddShoppingCartRoundedIcon color="action" />
-                }
-            </Button>
-            :
-            <Button
-                fullWidth
-                size="large"
-                color="error"
-                variant="contained"
-                disabled={isValid}
-                onClick={() => handleClick()}
-                endIcon={<AddShoppingCartRoundedIcon sx={{mr: 2}} fontSize='small' />}
-                sx={{
-                    px: 4,
-                    mx: {xs: 0, sm: 1, md: 4, lg: 4, xl: 6},
-                    fontWeight: "bold",
-                    boxShadow: 'none',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                        fontSize: 20,
-                        transition: 'all 0.3s ease',
-                        boxShadow: `0 10px 16px -4px #ccc}`
-                    }
-                }}>
-                {
-                    loading ? <CircularProgress size={24} color="inherit" /> : "افزودن به سبد خرید"
-                }
-            </Button>
-
-    }
+      ) : icon ? (
+        <Button
+          // fullWidth
+          color="warning"
+          // variant="contained"
+          size="small"
+          disabled={isValid}
+          onClick={() => handleClick()}
+          sx={{
+            color: "text.primary",
+            bgcolor: "warning.light",
+            minWidth: 54,
+            width: 54,
+            height: 54,
+            borderRadius: "50%",
+            fontWeight: "bold",
+            boxShadow: "none",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              fontSize: 15,
+              bgcolor: "warning.lighter",
+              transition: "all 0.3s ease",
+              boxShadow: `0 8px 16px -4px #fff}`,
+            },
+          }}
+        >
+          {loading ? (
+            <CircularProgress size={22} color="inherit" />
+          ) : (
+            <AddShoppingCartRoundedIcon fontSize="small" color="action" />
+          )}
+        </Button>
+      ) : (
+        <Button
+          fullWidth
+          size="large"
+          color="error"
+          variant="contained"
+          disabled={isValid}
+          onClick={() => handleClick()}
+          endIcon={
+            <AddShoppingCartRoundedIcon sx={{ mr: 2 }} fontSize="small" />
+          }
+          sx={{
+            px: 4,
+            mx: { xs: 0, sm: 1, md: 4, lg: 4, xl: 6 },
+            fontWeight: "bold",
+            boxShadow: "none",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              fontSize: 20,
+              transition: "all 0.3s ease",
+              boxShadow: `0 10px 16px -4px #ccc}`,
+            },
+          }}
+        >
+          {loading ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            "افزودن به سبد خرید"
+          )}
+        </Button>
+      )}
     </>
   );
 }

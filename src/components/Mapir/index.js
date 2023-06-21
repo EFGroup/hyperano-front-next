@@ -45,7 +45,7 @@ const Mapbox = ({
         <Marker
             coordinates={center}
             anchor="center" >
-            <img src="marker.png" width="30" height="30" />
+            <img src="marker.png" width="30" />
         </Marker>
         
         </Map>

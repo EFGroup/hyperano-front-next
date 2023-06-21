@@ -105,7 +105,7 @@ const IndexScreen = ({data = init}) => {
 function Slides({ item }) {
   return (
     <div style={{ padding: 0 }}>
-      <Card elevation={0} sx={{ borderRadius: 2 }}>
+      <Card elevation={0} sx={{ borderRadius: 4 }}>
         {/* <CardMedia
           component="img"
           alt={item.alt}

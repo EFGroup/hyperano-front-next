@@ -22,7 +22,8 @@ const user = (state = init, action) => {
         gender,
         birth_date,
         national_code,
-        created_at
+        created_at,
+        wallet,
       } } = action;
       return {
         ...state,
@@ -39,9 +40,10 @@ const user = (state = init, action) => {
           gender,
           birth_date,
           national_code,
-          created_at
-        }
-      }
+          created_at,
+          wallet,
+        },
+      };
     case 'UPDATE_USER':
       return {
         ...state,

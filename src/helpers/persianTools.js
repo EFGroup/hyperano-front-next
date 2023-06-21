@@ -1,7 +1,7 @@
 import { addCommas, digitsEnToFa } from "@persian-tools/persian-tools";
 
 export function currency(data) {
-    return `${digitsEnToFa(addCommas(Number(data)))} تومان` || "-";
+    return `${digitsEnToFa(addCommas(Number(data)))}` || "-";
 }
 
 export function productImgUrl(data) {

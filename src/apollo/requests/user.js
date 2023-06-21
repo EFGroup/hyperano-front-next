@@ -140,7 +140,7 @@ export default {
               products_count
               avg_scores_shop
             }
-            category_coupon{
+            category_coupon {
               id
             }
             discount_code
@@ -218,7 +218,6 @@ export default {
             }
           }
           wallet {
-            id
             balance
           }
         }
@@ -389,7 +388,7 @@ export default {
             products_count
             avg_scores_shop
           }
-          category_coupon{
+          category_coupon {
             id
           }
           discount_code
@@ -467,7 +466,6 @@ export default {
           }
         }
         wallet {
-          id
           balance
         }
         discounts {
@@ -695,5 +693,5 @@ export default {
         }
       }
     }
-  `
+  `,
 };

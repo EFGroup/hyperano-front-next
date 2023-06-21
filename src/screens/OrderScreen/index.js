@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import { useState } from 'react';
 
 import {
   Box,
@@ -21,11 +21,20 @@ import SelectAddress from './SelectAddress';
 import SelectPaymentType from './SelectPaymentType';
 import SelectShippingTime from './SelectShippingTime';
 
-export default function OrderScreenIndex({ order, loading, statusCode, message, refetch }) {
+import { order } from "apollo/requests";
+import { useLazyQuery } from '@apollo/client';
+import { useSelector } from 'react-redux';
+
+export default function OrderScreenIndex({ order: orderData, statusCode, message }) {
   const [address, setAddress] = useState();
   const [payment, setPaymentType] = useState();
   const [shipping, setShippingTime] = useState();
   const [activeStep, setActiveStep] = useState(0);
+  const {accessToken} = useSelector(state => state.user);
+
+  const [loading, setLoading] = useState(false);
+
+  const [res, setData] = useState(orderData);
 
   const steps = [
     'تعیین آدرس',
@@ -35,16 +44,44 @@ export default function OrderScreenIndex({ order, loading, statusCode, message, 
     'تایید و پرداخت'
   ];
   
-  const order_id = order?.id;
-  const shop_ids = order?.shop?.id;
+  const order_id = orderData?.id;
+  const shop_ids = orderData?.shop?.id;
   const handleReset = () => setActiveStep(0);
   const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+
+  const [getOrder] = useLazyQuery(
+      order.get
+  );
+
+  const refetch = async() => {
+    try {
+      setLoading(true)
+      const { data, error } = await getOrder({
+        variables: {
+          ids: order_id
+        },
+        context: {
+          serviceName: "auth",
+          headers: {
+            authorization: `Bearer ${accessToken}`
+          }
+        }
+      })
+      if(!error) {
+        setData(data ? data.order.data[0] : []);
+        setLoading(false)
+      }
+    } catch (error) {
+      
+    }
+    
+  }
 
   const getStep = (step) => {
     if (statusCode) {
       return <Finish
         pay={payment}
-        orderInfo={order}
+        orderInfo={res}
         address={address}
         message={message}
         shipping={shipping}
@@ -54,7 +91,7 @@ export default function OrderScreenIndex({ order, loading, statusCode, message, 
         setPaymentType={setPaymentType}
       />
     }
-    if(order?.status?.id === "1") {
+    if(res?.status?.id === "1") {
       switch (step) {
         case 0:
           return <SelectAddress
@@ -80,7 +117,7 @@ export default function OrderScreenIndex({ order, loading, statusCode, message, 
                     address={address}
                     payment={payment}
                     refetch={refetch}
-                    orderInfo={order}
+                    orderInfo={res}
                     shipping={shipping}
                     setActiveStep={setActiveStep}
                     setPaymentType={setPaymentType}
@@ -89,7 +126,7 @@ export default function OrderScreenIndex({ order, loading, statusCode, message, 
           return <Finish
                     pay={payment}
                     address={address}
-                    orderInfo={order}
+                    orderInfo={res}
                     shipping={shipping}
                     refetchInfo={refetch}
                     setActiveStep={setActiveStep}
@@ -101,7 +138,7 @@ export default function OrderScreenIndex({ order, loading, statusCode, message, 
     }else {
       return <Finish
                 pay={payment}
-                orderInfo={order}
+                orderInfo={res}
                 address={address}
                 shipping={shipping}
                 refetchInfo={refetch}
@@ -115,7 +152,7 @@ export default function OrderScreenIndex({ order, loading, statusCode, message, 
     <Card sx={{ mt: -10, borderRadius: 4 }}>
       <CardContent sx={{pt: 2, px: {xs: 1, sm: 1, md: 2}}}>
       {
-        order?.status?.id === "1" &&
+        res?.status?.id === "1" &&
         <Stepper alternativeLabel activeStep={activeStep} sx={{direction: 'ltr'}}>
           {
             steps.map((label, index) => {
@@ -154,7 +191,7 @@ export default function OrderScreenIndex({ order, loading, statusCode, message, 
               getStep(activeStep)
           }          
           {
-            order?.status?.id === "1" && activeStep < 3 &&
+            res?.status?.id === "1" && activeStep < 3 &&
             <Stack direction="row" alignItems="center" justifyContent="center" p={2}>
               <Button
                 color="inherit"

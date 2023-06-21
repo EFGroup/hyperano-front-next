@@ -8,28 +8,89 @@ import StoreRoundedIcon from '@mui/icons-material/StoreRounded';
 
 const categories = [
   {
-    title: "Category1",
-    image: "/images/categories/Cat00001.png"
+    id: "3",
+    title: "پروتئینی ها",
+    image: "/images/categories/Cat00001.png",
   },
   {
-    title: "Category2",
+    id: "81",
+    title: "چیپس، پفک و پاپ کورن",
     image: "/images/categories/Cat00002.png"
   },
   {
-    title: "Category3",
+    id: "102",
+    title: "بهداشتی و ضد عفونی",
     image: "/images/categories/Cat00003.png"
   },
   {
-    title: "Category4",
+    id: "34",
+    title: "لبنیات",
     image: "/images/categories/Cat00004.png"
   },
   {
-    title: "Category5",
+    id: "42",
+    title: "میوه و سبزی",
     image: "/images/categories/Cat00005.png"
   },
   {
-    title: "Category6",
+    id: "17",
+    title: "انواع نان",
     image: "/images/categories/Cat00006.png"
+  },
+  {
+    id: "149",
+    title: "سرگرمی و آموزش",
+    image: "/images/categories/Cat00007.png"
+  },
+  {
+    id: "123",
+    title: "لوازم التحریر",
+    image: "/images/categories/Cat00008.png"
+  },
+  {
+    id: "85",
+    title: "انواع دسر",
+    image: "/images/categories/Cat00009.png"
+  },
+  {
+    id: "95",
+    title: "کودک و بانوان",
+    image: "/images/categories/Cat00010.png"
+  },
+  {
+    id: "72",
+    title: "آجیل و خشکبار",
+    image: "/images/categories/Cat00011.png"
+  },
+  {
+    id: "113",
+    title: "مواد شوینده",
+    image: "/images/categories/Cat00012.png"
+  },
+  {
+    id: "55",
+    title: "کنسرو و غذای آماده",
+    image: "/images/categories/Cat00013.png"
+  },
+  {
+    id: "114",
+    title: "صابون و پودر لباسشویی",
+    image: "/images/categories/Cat00014.png"
+  },
+  {
+    id: "10",
+    title: "چاشنی ها",
+    image: "/images/categories/Cat00015.png"
+  },
+  {
+    id: "59",
+    title: "سوپ و آش",
+    image: "/images/categories/Cat00016.png"
+  },
+  {
+    id: "41",
+    title: "نوشیدنی ها",
+    image: "/images/categories/Cat00017.png"
   },
 ]
 
@@ -123,24 +184,23 @@ const brands = [
   },
 ]
 
-// const arr = Array(8).fill(1)
-
 function IndexScreen({shops}) {
   return (
     <Card sx={{ mt: -10, borderRadius: 4 }}>
     <Stack>
         <Slider />
+          <Typography variant='h3'>دسته های منتخب</Typography>
         <Stack py={2} px={1} direction="row" justifyContent="space-evenly" alignItems="center">
-        {
+          {
             categories.map( (item, i) => (
-                <Stack key={i} sx={{scrollSnapAlign: 'center'}} justifyContent="center" alignItems="center">
-                    <Avatar sx={{width: 112, height: 112, p: 1, bgcolor: '#f5f5f5'}} alt={item.title} src={item.image} />
-                    <Typography align="center" variant="subtitle2" bgcolor="#ffffff30" fontSize={14} borderRadius={2} mt={0.5}>
-                        {item.title}
-                    </Typography>
-                </Stack>
+              <Stack key={i} sx={{scrollSnapAlign: 'center'}} justifyContent="center" alignItems="center">
+                <Avatar sx={{width: 80, height: 80, p: 1, bgcolor: '#f5f5f5'}} alt={item.title} src={item.image} />
+                <Typography noWrap align="center" variant="subtitle2" bgcolor="#ffffff30" fontSize={14} borderRadius={2} mt={0.5}>
+                    {item.title}
+                </Typography>
+              </Stack>
             ))
-        }
+          }
         </Stack>
         
         <Grid py={2} px={1} container>

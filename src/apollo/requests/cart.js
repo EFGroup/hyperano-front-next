@@ -36,6 +36,11 @@ export default {
           co_price
           product_shop {
             id
+            wolesale_discounts {
+              quantity
+              discount_amount
+              discount_percent
+            }
             product_info {
               id
               title
@@ -71,7 +76,7 @@ export default {
     query orderCart {
       orderCart {
         id
-        user{
+        user {
           id
         }
         shop {
@@ -94,7 +99,7 @@ export default {
           products_count
           avg_scores_shop
         }
-        category_coupon{
+        category_coupon {
           id
         }
         discount_code
@@ -219,7 +224,7 @@ export default {
             products_count
             avg_scores_shop
           }
-          category_coupon{
+          category_coupon {
             id
           }
           discount_code
@@ -300,15 +305,11 @@ export default {
     }
   `,
   deleteOrderCart: gql`
-    mutation deleteOrderCart(
-      $ids: [String]!
-    ) {
-      deleteOrderCart(
-        ids: $ids
-      ){
+    mutation deleteOrderCart($ids: [String]!) {
+      deleteOrderCart(ids: $ids) {
         messages
         influenced_count
       }
     }
-  `
+  `,
 };
