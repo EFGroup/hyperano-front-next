@@ -48,6 +48,14 @@ export const getServerSideProps = withIronSessionSsr(
 
       const { data: menus } = await client.query({ query: productCategory.get });
 
+      const { data: primarySelectedCategories } = await client.query({
+        query: productCategory.get,
+        variables: {
+          selected_categories: 1,
+          depth: 1,
+        },
+      });
+
       return {
         props: {
           isLanding: false,
@@ -57,8 +65,9 @@ export const getServerSideProps = withIronSessionSsr(
           menus: menus?.productCategory,
           cart: initUserData?.order_carts,
           coupons: initUserData?.category_coupons,
-        }
-      }
+          primarySelectedCategories: primarySelectedCategories?.productCategory,
+        },
+      };
     }
     catch (error) {
       return {
@@ -70,8 +79,10 @@ export const getServerSideProps = withIronSessionSsr(
           coupons: [],
           isLanding: false,
           layout: "minimal",
-        }
-      }
+          offslider: [],
+          primarySelectedCategories: [],
+        },
+      };
     }
   },
   cookie

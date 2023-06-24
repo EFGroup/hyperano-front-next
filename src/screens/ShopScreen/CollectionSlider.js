@@ -7,7 +7,6 @@ import { convertEnToFa, productImgUrl } from 'helpers/persianTools';
 import Link from 'next/link';
 
 const CollectionSlider = ({ data = [] }) => {
-    console.log("data", data)
   return (
     <Card
         sx={{

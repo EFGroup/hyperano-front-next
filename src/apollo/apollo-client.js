@@ -21,11 +21,11 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // const restLink = new RestLink({ uri: '' });
 const auth = new HttpLink({
-  uri: 'https://api.hyperano.ir/graphql/auth'
+  uri: 'https://admin.hy2.ir/graphql/auth'
 });
 
 const guess = new HttpLink({
-  uri: 'https://api.hyperano.ir/graphql'
+  uri: 'https://admin.hy2.ir/graphql'
 });
 
 const graphqlEndpoints = ApolloLink.split(

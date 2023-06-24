@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { VerticalCard }from 'components';
 import { Box, Button, Typography, Card, Stack, CardHeader } from '@mui/material';
 import Image from 'next/image';
+import { CountdownTimer } from "components";
 
 export default function SliderPortfolio({title, data}) {
   const slider = useRef(null);
@@ -22,13 +23,24 @@ export default function SliderPortfolio({title, data}) {
         rowGap={2}
       >
         <Stack
-          direction={{ xs: "row-reverse", sm: "column" }}
+          direction={{ xs: "row", sm: "column" }}
           minWidth={{ xs: "100%", sm: 260 }}
-          justifyContent="center"
+          justifyContent={{ xs: "space-between", sm: "space-evenly" }}
           alignItems="center"
           rowGap={3}
         >
-          <Stack rowGap={1}>
+          {/* <Stack
+            flex={1}
+            rowGap={2}
+            justifyContent="center"
+            alignItems="center"
+          > */}
+          <Typography color="#fff" variant="h6">
+            {title}
+          </Typography>
+          <CountdownTimer targetDate="2023/06/30 17:34:2" color="error.dark" />
+          {/* </Stack> */}
+          {/* <Stack rowGap={1}>
             <Typography color="#fff" textAlign="center" variant="h1">
               فروش ویژه
             </Typography>
@@ -40,11 +52,11 @@ export default function SliderPortfolio({title, data}) {
             >
               محصولات با بیشترین تخفیف
             </Typography>
-          </Stack>
+          </Stack> */}
           <Box
             display={{ xs: "none", sm: "flex" }}
             width={{ xs: 64, sm: 240 }}
-            height={{ xs: 64, sm: 240 }}
+            height={{ xs: 64, sm: 120 }}
             position="relative"
           >
             <Image
@@ -93,7 +105,12 @@ export default function SliderPortfolio({title, data}) {
             alignItems="center"
             rowGap={3}
           >
-            <Button color="inherit" size="large" variant="contained">
+            <Button
+              sx={{ bgcolor: "#fff", color: "error.main" }}
+              variant="contained"
+              color="error"
+              size="large"
+            >
               مشاهده همه
             </Button>
           </Stack>

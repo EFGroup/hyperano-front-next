@@ -63,26 +63,20 @@ export default function PackageProduct({
     <Card
       elevation={6}
       sx={{
-        width: 240,
-        bgcolor: "warning.main",
+        width: 260,
+        color: "warning.main",
         position: "relative",
         transition: "all 0.2s ease",
         boxShadow: "0 0px 16px -8px #eaeaea",
-        "&:hover": {
-          transition: "all 0.5s ease",
-          boxShadow: `0 8px 8px -8px #ccc`,
-        },
       }}
     >
       <CardActionArea onClick={onClick} href={`/shops/${shop?.id}/${id}`}>
         <CardHeader
-          sx={{ p: 0.5 }}
           title={
             <Typography
-              width={200}
               noWrap
-              color="error.darker"
-              textAlign="start"
+              color="text.primary"
+              textAlign="center"
               variant="subtitle1"
             >
               {productTitle}
@@ -94,9 +88,9 @@ export default function PackageProduct({
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography textAlign="start" variant="body1" fontSize={16}>
+              {/* <Typography textAlign="start" variant="body1" fontSize={16}>
                 {convertEnToFa(introtext || ".")}
-              </Typography>
+              </Typography> */}
               {/* {discount_percent && (
                 <Chip
                   sx={{ minWidth: 40 }}
@@ -143,7 +137,7 @@ export default function PackageProduct({
             bgcolor: "#fff",
             borderRadius: 2,
             mx: "auto",
-            p: 1
+            p: 1,
           }}
         >
           <Stack
@@ -239,7 +233,7 @@ export default function PackageProduct({
             )}
           </Stack>
         </CardMedia>
-        <CardContent sx={{ pt: 2.5 }}>
+        <CardContent sx={{ pt: 2.5, p: 1 }}>
           <Stack
             direction="row"
             justifyContent="space-between"
@@ -268,7 +262,7 @@ export default function PackageProduct({
                 />
               )}
               <Typography
-                color="error.main"
+                color="text.disabled"
                 variant="subtitle2"
                 align="center"
                 component="s"
@@ -284,7 +278,7 @@ export default function PackageProduct({
                 </Typography> */}
               </Typography>
             </Stack>
-            <Typography color="primary" variant="h3" align="center">
+            <Typography color="text.primary" variant="h5" align="center">
               {currency(me_price)}
               <Typography
                 mx={0.5}
@@ -305,7 +299,7 @@ export default function PackageProduct({
         justifyContent="center"
         position="absolute"
         width="100%"
-        bottom={8}
+        bottom={4}
         margin="auto"
         zIndex={2}
         px={2}

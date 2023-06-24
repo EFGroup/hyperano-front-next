@@ -4,14 +4,12 @@ import PropTypes from 'prop-types';
 import { Topbar, Footer } from './components';
 
 const MinimalLayout = ({ children }) => {
-  const { menus, isLanding } = children.props;
+  const { menus, shops, isLanding } = children.props;
 
   return (
     <>
-      <Topbar menus={menus} isLanding={isLanding}/>
-      <main>
-        { children }
-      </main>
+      <Topbar menus={menus} shops={shops} isLanding={isLanding} />
+      <main>{children}</main>
       <Footer menus={menus} />
     </>
   );

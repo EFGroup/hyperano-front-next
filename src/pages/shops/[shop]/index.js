@@ -46,6 +46,22 @@ export const getServerSideProps = withIronSessionSsr(
 
       const { data: menus } = await client.query({ query: productCategory.get });
 
+      const { data: primarySelectedCategories } = await client.query({
+        query: productCategory.get,
+        variables: {
+          selected_categories: 1,
+          depth: 1
+        },
+      });
+
+      const { data: secondarySelectedCategories } = await client.query({
+        query: productCategory.get,
+        variables: {
+          selected_categories: 1,
+          depth: 2,
+        },
+      });
+
       const { data: carouselData } = await client.query({
         query: carousel.get,
         variables: {
@@ -96,6 +112,8 @@ export const getServerSideProps = withIronSessionSsr(
           layout: "minimal",
           user: initUserData,
           menus: menus?.productCategory,
+          primarySelectedCategories: primarySelectedCategories?.productCategory,
+          secondarySelectedCategories: secondarySelectedCategories?.productCategory,
           cart: initUserData?.order_carts,
           coupons: initUserData?.category_coupons,
           packageData: packageData?.productShop?.products?.data,

@@ -10,7 +10,7 @@ import {
 
 import { ShopCard } from 'components';
 
-const ShopsScreen = ({ shops, loading }) => {
+const ShopsScreen = ({ shops, primarySelectedCategories, loading }) => {
   return (
     <Card sx={{ mt: -10, borderRadius: 4 }}>
       <CardHeader title="فروشگاه های ما" />

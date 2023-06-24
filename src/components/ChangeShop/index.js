@@ -99,11 +99,11 @@ export default function ChangeShopDialog() {
     {
       fullScreen
       ?
-        <IconButton size="small" onClick={handleClickOpen}>
+        <IconButton size="large" sx={{bgcolor: 'info.lighter', color: 'info.main'}} onClick={handleClickOpen}>
           <StoreRoundedIcon fontSize="small" />
         </IconButton>
       :
-        <Button width={116} size="small" variant="contained" onClick={handleClickOpen}>
+        <Button width={116} size="medium" variant="outlined" onClick={handleClickOpen}>
           تغییر فروشگاه
         </Button>
     }

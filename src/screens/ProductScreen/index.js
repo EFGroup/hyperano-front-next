@@ -60,7 +60,6 @@ export default function ProductScreen({
 
   const productTitle = `${title} ${convertEnToFa(introtext)} ${brand?.title || ""}`;
 
-  console.log("packaged_items", packaged_items);
   return (
     <Card sx={{ mt: -10, borderRadius: 4 }}>
       <CardHeader

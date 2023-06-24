@@ -5,7 +5,7 @@ export default function Button(theme) {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
+          borderRadius: 24,
           '&:hover': {
             boxShadow: 'none'
           }

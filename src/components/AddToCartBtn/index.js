@@ -35,8 +35,10 @@ const AddToCartBtn = (props)=> {
     currentExist = false,
     attrVals = [],
     isValid = false,
-    icon = true
-  }  = props;
+    icon = true,
+    color = "text.secondary",
+    bgcolor = "warning",
+  } = props;
 
   const [ saveOrderCartItem, { loading } ] = useMutation(
     cart.saveOrderCartItem,
@@ -210,21 +212,21 @@ const AddToCartBtn = (props)=> {
               variant="outlined"
               sx={{ mr: -2, px: 2 }}
             >
-              <RemoveCircleOutlineRoundedIcon fontSize='small' />
+              <RemoveCircleOutlineRoundedIcon fontSize="small" />
             </Button>
           )}
         </>
       ) : icon ? (
         <Button
           // fullWidth
-          color="warning"
+          color={bgcolor}
           // variant="contained"
           size="small"
           disabled={isValid}
           onClick={() => handleClick()}
           sx={{
-            color: "text.primary",
-            bgcolor: "warning.light",
+            color: color,
+            bgcolor: `${bgcolor}.lighter`,
             minWidth: 54,
             width: 54,
             height: 54,
@@ -234,7 +236,7 @@ const AddToCartBtn = (props)=> {
             transition: "all 0.3s ease",
             "&:hover": {
               fontSize: 15,
-              bgcolor: "warning.lighter",
+              bgcolor: `${bgcolor}.lighter`,
               transition: "all 0.3s ease",
               boxShadow: `0 8px 16px -4px #fff}`,
             },
@@ -243,7 +245,7 @@ const AddToCartBtn = (props)=> {
           {loading ? (
             <CircularProgress size={22} color="inherit" />
           ) : (
-            <AddShoppingCartRoundedIcon fontSize="small" color="action" />
+            <AddShoppingCartRoundedIcon fontSize="small" color={bgcolor} />
           )}
         </Button>
       ) : (

@@ -2,7 +2,7 @@ import IndexScreen from 'screens/IndexScreen';
 import { withIronSessionSsr } from 'iron-session/next';
 
 import client from "apollo/apollo-client";
-import { user, cart, shop, productCategory } from 'apollo/requests';
+import { user, cart, shop, productCategory, productShop } from 'apollo/requests';
 
 const cookie = {
   cookieName: process.env.COOKIE_NAME,
@@ -53,6 +53,14 @@ export const getServerSideProps = withIronSessionSsr(
         // }
       });
 
+      const { data: offsliderData } = await client.query({
+        query: productShop.get,
+        variables: {
+          orderBy_field: "discount_percent",
+          limit: 10,
+        },
+      });
+
       return {
         props: {
           isLanding: true,
@@ -62,8 +70,9 @@ export const getServerSideProps = withIronSessionSsr(
           menus: menus?.productCategory,
           cart: initUserData?.order_carts,
           coupons: initUserData?.category_coupons,
-        }
-      }
+          offslider: offsliderData?.productShop?.products?.data,
+        },
+      };
     }
     catch (error) {
       return {
@@ -73,10 +82,11 @@ export const getServerSideProps = withIronSessionSsr(
           menus: [],
           shops: [],
           coupons: [],
+          offslider: [],
           isLanding: true,
           layout: "minimal",
-        }
-      }
+        },
+      };
     }
   },
   cookie

@@ -33,7 +33,7 @@ const Footer = ({menus}) => {
   }
   return (
     <footer>
-      <Stack sx={{
+      {/* <Stack sx={{
         // backgroundImage: 'url(/assets/svg/discount.svg)',
         // backgroundRepeat: 'no-repeat',
         // backgroundSize: 'cover',
@@ -65,7 +65,7 @@ const Footer = ({menus}) => {
               }}
           />
         </Stack>
-      </Stack>
+      </Stack> */}
 
       <Stack py={2} columnGap={1} direction="row" justifyContent="space-evenly" alignItems="center">
         <Stack justifyContent="center" alignItems="center" rowGap={1}>
